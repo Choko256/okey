@@ -3,18 +3,21 @@
 const Commander = require('commander')
 const Chalk = require('chalk')
 const Generator = require('../lib/generator')
+const Fs = require('fs')
 
 Commander
     .version(require('../package.json').version)
     .usage('[options]')
     .option('-p, --pattern [pattern]', 'Pattern to use for serial generation')
     .option('-s, --script [script]', 'Script file path for serial generation')
-    .option('-o, --output [output]', 'Output file path. If omitted, output is stdout')
+    .option('-o, --output-file [output-file]', 'Output file path')
     .option('-v, --verbose', 'Trigger verbose mode')
     .option('-c, --count [count]', 'Number of serials to generate [1]', 1)
     .parse(process.argv)
 
 console.log(Chalk.green.bold('.: OKey Serial Generator :.'))
+
+console.log(Commander)
 
 let promise = null
 if (Commander.pattern) {
@@ -30,5 +33,20 @@ if (promise === null) {
     process.exit(1)
 }
 
-let keys = []
-
+let keyPromises = []
+for (let i = 0; i < Commander.count; i++) {
+    keyPromises.push(promise)
+}
+Promise.all(keyPromises)
+    .then((keys) => {
+        let output = Fs.createWriteStream(Commander.outputFile)
+        output.write(keys.join('\r\n'))
+        return true
+    })
+    .then(() => {
+        console.log(Chalk.green.bold('Finished successfully.'))
+    })
+    .catch((err) => {
+        console.log(`${Chalk.red.bold('error')}: ${err.message}`)
+        Fs.createWriteStream('okey-debug.log').write(err.stack)
+    })
