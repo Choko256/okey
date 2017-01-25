@@ -1,0 +1,26 @@
+{
+  "name": "okey",
+  "version": "1.0.0-beta.1",
+  "description": "Random serial number generation for your own software",
+  "bin": {
+    "okey": "bin/okey.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Choko256/okey.git"
+  },
+  "author": "Michael Chacaton <chako256@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Choko256/okey/issues"
+  },
+  "homepage": "https://github.com/Choko256/okey#readme",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "chalk": "^1.1.3",
+    "commander": "^2.9.0"
+  }
+}

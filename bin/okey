@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+const Commander = require('commander')
+const Chalk = require('chalk')
+const Generator = require('../lib/generator')
+
+Commander
+    .version(require('../package.json').version)
+    .usage('[options]')
+    .option('-p, --pattern [pattern]', 'Pattern to use for serial generation')
+    .option('-s, --script [script]', 'Script file path for serial generation')
+    .option('-o, --output [output]', 'Output file path. If omitted, output is stdout')
+    .option('-v, --verbose', 'Trigger verbose mode')
+    .option('-c, --count [count]', 'Number of serials to generate [1]', 1)
+    .parse(process.argv)
+
+console.log(Chalk.green.bold('.: OKey Serial Generator :.'))
+
+let promise = null
+if (Commander.pattern) {
+    console.log(`${Chalk.blue.bold('pattern')}: generating following pattern`)
+    promise = Generator.generateWithPattern(Commander.pattern)
+} else if (Commander.script) {
+    console.log(`${Chalk.green.bold('script')}: generating following script`)
+    promise = Generator.generateWithScript(Commander.script)
+}
+
+if (promise === null) {
+    console.log(`${Chalk.red.bold('error')}: cannot generate without a pattern or a script`)
+    process.exit(1)
+}
+
+let keys = []
+
