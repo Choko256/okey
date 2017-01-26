@@ -17,15 +17,13 @@ Commander
 
 console.log(Chalk.green.bold('.: OKey Serial Generator :.'))
 
-console.log(Commander)
-
 let promise = null
 if (Commander.pattern) {
     console.log(`${Chalk.blue.bold('pattern')}: generating following pattern`)
-    promise = Generator.generateWithPattern(Commander.pattern)
+    promise = Generator.generateWithPattern(Commander.pattern, Commander.count, Commander.verbose)
 } else if (Commander.script) {
     console.log(`${Chalk.green.bold('script')}: generating following script`)
-    promise = Generator.generateWithScript(Commander.script)
+    promise = Generator.generateWithScript(Commander.script, Commander.count, Commander.verbose)
 }
 
 if (promise === null) {
@@ -33,11 +31,7 @@ if (promise === null) {
     process.exit(1)
 }
 
-let keyPromises = []
-for (let i = 0; i < Commander.count; i++) {
-    keyPromises.push(promise)
-}
-Promise.all(keyPromises)
+promise
     .then((keys) => {
         let output = Fs.createWriteStream(Commander.outputFile)
         output.write(keys.join('\r\n'))
