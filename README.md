@@ -5,6 +5,8 @@ Random serial number generation for your own software
 
 There are two ways to generate keys with OKey.
 
+> **WARNING**: This software is **NOT A KEYGEN**. This software is only a little utility for generating random serial numbers for your own usage.
+
 ### Generate following a pattern for 15 random keys
 
 Example:
@@ -70,7 +72,7 @@ excludes: '0O'
 [+1-4]: digit
 [+1-4..20]: upper
 
-(0...): {mod 97 == 0}
+(0...): {sum:mod(97)=0}
 (-3..-1): 'GHF'
 ```
 
